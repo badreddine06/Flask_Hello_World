@@ -10,7 +10,7 @@ def hello_world():
     return "<h2>Bonjour tout le monde !</h2><p>Pour accéder à vos exerices cliquez <a href='./exercices/'>Ici</a></p>"
 
 @app.route('/exercices/') 
-# test
+# tgvtff
 def exercices():
     return render_template('exercices.html')
                                                                                                                
