@@ -19,19 +19,28 @@ jobs:
     - name: Install dependencies
       run: |
         pip install -r requirements.txt
+        pip install pyngrok
+
+    - name: Set FLASK_APP environment variable
+      run: echo "FLASK_APP=__init__.py" >> $GITHUB_ENV
 
     - name: Set up Ngrok auth token
       run: |
-        pip install pyngrok
-        python -c "from pyngrok import ngrok; ngrok.set_auth_token('${{ secrets.NGROK_AUTHTOKEN }}')"
+        python -c "
+from pyngrok import ngrok
+ngrok.set_auth_token('${{ secrets.NGROK_AUTHTOKEN }}')
+"
 
     - name: Start Flask in background
       run: |
-        nohup python -m flask run --host=0.0.0.0 --port=5000 &
+        nohup flask run --host=0.0.0.0 --port=5000 &
 
     - name: Expose with Ngrok for 120 seconds
       run: |
-        python -c "from pyngrok import ngrok; import time
+        python -c "
+from pyngrok import ngrok
+import time
 url = ngrok.connect(5000)
 print('🔗 URL ngrok:', url)
-time.sleep(120)"
+time.sleep(120)
+"
